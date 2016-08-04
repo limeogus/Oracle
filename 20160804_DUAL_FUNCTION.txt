@@ -1,0 +1,151 @@
+/*
+    1.DUAL 테이블
+*/
+SELECT * FROM DUAL;
+/*
+    2.함수
+*/
+SELECT -10,ABS(-10) FROM DUAL;
+
+SELECT 34.5678, FLOOR(34.5678) FROM DUAL;
+
+SELECT 34.5678, ROUND(34.5678) FROM DUAL;
+
+SELECT 34.5678, ROUND(34.5678,2) FROM DUAL;
+
+SELECT 34.5678, ROUND(34.5678,1) FROM DUAL;
+
+/* 자리수 자르기*/
+SELECT TRUNC(34.5678,2), TRUNC(34.5678,-1), TRUNC(34.5678) FROM DUAL;
+
+/* 나머지 구하기*/
+SELECT MOD (27,2), MOD(27,5), MOD(27,7) FROM DUAL;
+
+/* 사원번호가 홀수인 사람을 출력하세요*/
+SELECT * FROM EMP WHERE MOD(EMPNO,2)=1;
+
+/* 문자함수 */
+/* UPPER */
+SELECT 'Welcome to Oracle', UPPER('Welcome to Oracle') FROM DUAL;
+/* LOWER */
+SELECT 'Welcome to Oracle', LOWER('Welcome to Oracle') FROM DUAL;
+/* 활용 */
+SELECT EMPNO, ENAME, JOB FROM EMP WHERE JOB='manager';
+
+SELECT EMPNO, ENAME, JOB FROM EMP WHERE JOB=UPPER('manager'); 
+
+/* LENGTH */
+SELECT LENGTH('Oracle'), LENGTH('오라클') FROM DUAL;
+/* LENGTHB */
+SELECT LENGTH('Oracle'), LENGTHB('오라클') FROM DUAL;
+
+
+/* SUBSTR */
+SELECT SUBSTR('Welcome to Oracle',4 , 3) FROM DUAL;
+
+SELECT SUBSTR('Welcome to Oracle',-4 , 3) FROM DUAL;
+
+SELECT SUBSTR(HIREDATE,1,2) 년, SUBSTR(HIREDATE,4,2)월 FROM EMP;
+
+SELECT * FROM EMP WHERE SUBSTR(HIREDATE,4,2) = 09;
+
+SELECT * FROM EMP WHERE SUBSTR(HIREDATE,1,2)=81;
+
+SELECT * FROM EMP WHERE SUBSTR(ENAME,-1,1)='E'
+
+SELECT INSTR('WELCOME TO ORACLE'  , 'O', 6, 2) FROM DUAL;
+
+SELECT INSTR('데이터베이스', '이', 3 ,1), INSTRB('데이터베이스', '이', 3 ,1)FROM DUAL;
+
+
+SELECT LPAD('ORACLE', 20, '#') FROM DUAL;
+
+SELECT RPAD('ORACLE' , 20, '#')FROM DUAL;
+
+
+/* LTRIM, RTRIM, TRIM*/
+SELECT LTRIM(' ORACLE ') FROM DUAL;
+
+SELECT RTRIM(' ORACLE ') FROM DUAL;
+
+SELECT TRIM(' ORACLE ') FROM DUAL;
+
+/* 날짜 함수 */
+SELECT SYSDATE+1, SYSDATE , SYSDATE-1 FROM DUAL;
+
+/*
+    현재날짜    삭제예정날짜
+    SYSDATE     SYSDATE+100 
+*/
+SELECT ROUND(SYSDATE-HIREDATE) 근무일수 FROM EMP;
+
+SELECT EMPNO 사번, ENAME 사원명, HIREDATE 입사일, ROUND(SYSDATE-HIREDATE) 근무일수 FROM EMP ORDER BY 근무일수 DESC;
+
+/* 특정기준으로 버리는 TRUNC 함수*/
+SELECT ENAME, HIREDATE, TRUNC(HIREDATE,'MONTH') FROM EMP;
+
+SELECT ENAME, HIREDATE, TRUNC(HIREDATE,'MM') FROM EMP;
+
+/* MONTHS_BETWEEN*/
+SELECT 
+    SYSDATE 현재날짜
+    , HIREDATE 입사일 
+    , ROUND(MONTHS_BETWEEN (SYSDATE,HIREDATE)) 근무월수
+    , ROUND(SYSDATE-HIREDATE) 근무일수  
+FROM EMP;
+
+/* ADD_MONTHS */
+SELECT 
+    HIREDATE 입사일,
+    ADD_MONTHS(HIREDATE, 6) "6개월후"
+FROM EMP;
+
+SELECT 
+    SYSDATE,
+    NEXT_DAY(SYSDATE, '수요일')
+FROM DUAL;
+
+/* TO_CHAR */
+SELECT 
+    SYSDATE
+    ,TO_CHAR(SYSDATE,'YYYY-MM-DD') 
+FROM DUAL;
+
+
+SELECT 
+    EMPNO
+    ,ENAME
+    ,HIREDATE
+    ,TO_CHAR(HIREDATE,'YY-MM-DD DY HH24:MI:SS')
+FROM EMP;
+
+/* 통화 기준에 맞춰 3자리씩 나누어 표현*/
+SELECT
+    SAL
+    ,TO_CHAR(SAL,'L999,999')
+FROM EMP;
+
+/* DECODE 함수*/
+SELECT
+    DEPTNO,
+    DECODE(DEPTNO, 10, 'A' , 20 , 'B', 'DEFAULT')
+FROM EMP
+ORDER BY DEPTNO;
+
+SELECT ENAME, DEPTNO,DECODE(DEPTNO , 10 , 'ACCOUNTTING',
+                                                         20, 'RESEARCH',
+                                                         30, 'SALES',
+                                                         40, 'OPERATIONS') AS DNAME
+FROM EMP;
+
+SELECT EMPNO, ENAME, JOB, SAL ,NVL(DECODE(JOB, 'ANALYST', SAL+(SAL*0.05),
+                                                              'SALESMAN', SAL+(SAL*0.1),
+                                                              'CLERK', SAL+(SAL*0.2)),0) UPSALE
+FROM EMP ORDER BY JOB;
+
+
+
+
+
+
+
