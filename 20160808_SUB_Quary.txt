@@ -1,0 +1,137 @@
+SELECT DEPTNO
+FROM EMP
+WHERE ENAME='SMITH';
+
+SELECT DNAME 
+FROM DEPT
+WHERE DEPTNO=20;
+
+SELECT DNAME 
+FROM DEPT
+WHERE DEPTNO=(SELECT DEPTNO
+                       FROM EMP
+                       WHERE ENAME='SMITH');
+                       
+/*1번 - 서브쿼리 */
+SELECT ENAME, DEPTNO
+FROM EMP
+WHERE DEPTNO =(SELECT DEPTNO 
+              
+
+          FROM EMP 
+                        WHERE ENAME='SMITH');
+                        
+/* 1번 퀴러를 조인 형태로 바꾸기*/
+SELECT E1.ENAME, E1.DEPTNO
+FROM EMP E1, EMP E2
+WHERE E1.DEPTNO = E2.DEPTNO 
+AND E2.ENAME='SMITH'         
+
+/*2번 */                        
+SELECT JOB 
+FROM EMP
+WHERE ENAME='SMITH'
+
+SELECT *
+FROM EMP
+WHERE JOB=(SELECT JOB 
+                FROM EMP
+                WHERE ENAME='SMITH');
+/*3번 */
+SELECT SAL
+FROM EMP
+WHERE ENAME='SMITH';
+
+SELECT ENAME, SAL
+FROM EMP
+WHERE SAL>=(SELECT SAL
+                 FROM EMP
+                 WHERE ENAME='ALLEN')
+ORDER BY SAL;
+
+SELECT E1.ENAME, E1.SAL
+FROM EMP E1,EMP E2
+WHERE E1.SAL>=E2.SAL AND E2.ENAME='ALLEN'
+
+/*4번 */
+SELECT ENAME,DEPTNO
+FROM EMP
+WHERE DEPTNO=(SELECT DEPTNO
+                        FROM DEPT
+                        WHERE LOC='DALLAS');
+
+SELECT ENAME, EMP.DEPTNO
+FROM EMP, DEPT
+WHERE EMP.DEPTNO =DEPT.DEPTNO
+AND LOC='DALLAS';
+
+SELECT * FROM DEPT;
+
+
+/*5번*/
+SELECT ENAME, SAL
+FROM EMP
+WHERE DEPTNO = (SELECT DEPTNO
+                           FROM DEPT
+                           WHERE DNAME='SALES'); 
+                           
+
+/*6번*/
+SELECT * FROM EMP
+
+
+SELECT ENAME, SAL
+FROM EMP
+WHERE MGR = (SELECT EMPNO
+                     FROM EMP
+                     WHERE ENAME='KING');
+                     
+
+/*서브쿼리에서 그룹함수*/
+SELECT ENAME,SAL
+FROM EMP
+WHERE SAL >(SELECT AVG(SAL) FROM EMP);
+
+
+/*다중행 서브쿼리*/
+SELECT DISTINCT DEPTNO
+FROM EMP
+WHERE SAL>=3000;
+
+SELECT ENAME, SAL, DEPTNO
+FROM EMP
+WHERE DEPTNO IN (SELECT DISTINCT DEPTNO
+                        FROM EMP
+                        WHERE SAL>=3000);
+                        
+/*7번*/
+/* MAX 함수, GROUP BY절*/
+SELECT DEPTNO, MAX(SAL)
+FROM EMP
+GROUP BY DEPTNO
+
+SELECT EMPNO,ENAME,SAL,DEPTNO
+FROM EMP
+WHERE SAL IN(SELECT MAX(SAL)
+                   FROM EMP
+                   GROUP BY DEPTNO);
+
+
+
+/* ALL OPERATOR*/
+SELECT ENAME, SAL
+FROM EMP
+WHERE SAL > ALL(SELECT SAL FROM EMP WHERE DEPTNO=30);
+
+
+
+
+
+
+
+
+
+
+
+
+
